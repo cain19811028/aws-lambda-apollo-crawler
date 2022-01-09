@@ -131,3 +131,4 @@ dmypy.json
 # lambda layer
 layer/chromium-binaries
 layer/python-dependencies
+/chromedriver

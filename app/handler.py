@@ -3,6 +3,9 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from utility import scroll_down_to_bottom
+from ssm import SSMHelper
 
 def set_chrome_options():
     options = Options()
@@ -11,7 +14,53 @@ def set_chrome_options():
     options.add_argument('--no-sandbox')
     options.add_argument('--single-process')
     options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--remote-debugging-port=9222')
     return options
+
+
+def login(driver):
+    ssm = SSMHelper()
+
+    driver.get("https://asiaauth.mayohr.com/")
+    scroll_down_to_bottom(driver)
+
+    company = driver.find_element(By.NAME, "companyCode")
+    company.clear()
+    company.send_keys("MOXA")
+
+    employee = driver.find_element(By.NAME, "employeeNo")
+    employee.clear()
+    employee.send_keys("20180003")
+
+    password = driver.find_element(By.NAME, "password")
+    password.clear()
+    password.send_keys(ssm.get_secret("apollo"))
+
+    time.sleep(2)
+
+    driver.find_element_by_tag_name('form').submit()
+
+
+def check_in(driver):
+    time.sleep(5)
+
+    driver.get("https://apollo.mayohr.com/ta?id=webpunch")
+    scroll_down_to_bottom(driver)
+
+    time.sleep(5)
+    
+    # click check in button
+    driver.find_element(By.CLASS_NAME, "ta_btn_cancel").click()
+
+    time.sleep(3)
+
+    # click confirm button
+    button = driver.find_elements_by_tag_name("button")
+    if len(button) == 3:
+        button_confirm = button[1]
+        button_confirm.click()
+
+    print("finish")
 
 
 def lambda_handler(event, context):
@@ -23,26 +72,12 @@ def lambda_handler(event, context):
     time_flag_3 = time.time()
     print("webdriver.chrome: %ss" % (time_flag_3 - time_flag_2))
 
-    driver.get("https://asiaauth.mayohr.com/")
-
-    # set_chrome_options: 1.33514404296875e-05s
-    # webdriver.chrome: 4.760722398757935s
-    # webdriver get url: 4.318072319030762s
-    # scroll down to bottom: 3.224916458129883s
-    # webdriver parse data: 4.119561195373535s
-    # webdriver close: 0.11644101142883301s
-    # webdriver quit: 0.004262208938598633s
-    # total duration: 16545.72 ms
+    login(driver)
+    check_in(driver)
 
     return True
 
 
-time_flag_1 = time.time()
-options = set_chrome_options()
-time_flag_2 = time.time()
-print("set_chrome_options: %ss" % (time_flag_2 - time_flag_1))
-driver = webdriver.Chrome('/opt/chromedriver', chrome_options=options)
-time_flag_3 = time.time()
-print("webdriver.chrome: %ss" % (time_flag_3 - time_flag_2))
-
-driver.get("https://asiaauth.mayohr.com/")
+# driver = webdriver.Chrome('/opt/chromedriver')
+# login(driver)
+# check_in(driver)

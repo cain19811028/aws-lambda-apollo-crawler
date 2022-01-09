@@ -86,9 +86,11 @@ Resources:
         LambdaSchedule:
           Type: Schedule
           Properties:
-            Schedule: cron(0 0 * * ? *)
+            Schedule: cron(0 0,10 ? * MON-FRI *)
       Environment:
         Variables:
           APP_NAME: 'aws-lambda-apollo-crawler'
           CLEAR_TMP: "true"
           PATH: /var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin:/tmp/bin:/tmp/bin/lib
+          COMPANY: MOXA
+          EID: 2018003

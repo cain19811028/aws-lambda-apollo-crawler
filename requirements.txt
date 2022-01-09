@@ -1,8 +1,2 @@
-# boto3
-# chromedriver-binary
-# g5-lambda-psycopg2
-# geoalchemy2
-# importlib-metadata
-selenium
-# sqlalchemy
-# typing_extensions
+boto3
+selenium==3.141.0
