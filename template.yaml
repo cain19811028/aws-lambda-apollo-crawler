@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  aws-lambda-apollo-crawler
+
+  check in by apollo
+
+Globals:
+  Function:
+    Timeout: 900
+
+Resources:
+  DeploymentChromiumPermission:
+    Type: "AWS::Lambda::LayerVersionPermission"
+    Properties:
+      Action: lambda:GetLayerVersion
+      LayerVersionArn: !Ref ChromiumLayer
+      Principal: '*'
+
+  DeploymentPythonPermission:
+    Type: "AWS::Lambda::LayerVersionPermission"
+    Properties:
+      Action: lambda:GetLayerVersion
+      LayerVersionArn: !Ref PythonLayer
+      Principal: '*'
+
+  ChromiumLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: chromium-selenium-layer
+      Description: Headless Chromium and Selenium WebDriver
+      ContentUri: layer/chromium-binaries
+      CompatibleRuntimes:
+        - python3.7
+      LicenseInfo: 'MIT'
+      RetentionPolicy: Retain
+
+  PythonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: python-layer
+      Description: Python dependencies
+      ContentUri: layer/python-dependencies
+      CompatibleRuntimes:
+        - python3.7
+      LicenseInfo: 'MIT'
+      RetentionPolicy: Retain
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      Policies:
+        - PolicyName: 'ParameterStoreAccess'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ssm:GetParameter*'
+                Resource: '*'
+
+  ApolloCrawler:
+    Type: AWS::Serverless::Function
+    Description: check in by apollo
+    Properties:
+      Role: !GetAtt LambdaRole.Arn
+      CodeUri: app/
+      Handler: handler.lambda_handler
+      Runtime: python3.7
+      MemorySize: 764
+      Layers:
+        - !Ref ChromiumLayer
+        - !Ref PythonLayer
+      Events:
+        LambdaSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *)
+      Environment:
+        Variables:
+          APP_NAME: 'aws-lambda-apollo-crawler'
+          CLEAR_TMP: "true"
+          PATH: /var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin:/tmp/bin:/tmp/bin/lib

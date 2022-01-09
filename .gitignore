@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# lambda layer
+layer/chromium-binaries
+layer/python-dependencies
