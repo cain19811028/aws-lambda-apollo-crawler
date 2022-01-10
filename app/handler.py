@@ -60,6 +60,26 @@ def check_in(driver):
         button_confirm = button[1]
         button_confirm.click()
 
+    time.sleep(3)
+
+    # click overtime button
+    button = driver.find_elements_by_tag_name("button")
+    if len(button) == 3:
+        button_overtime = button[2]
+        button_overtime.click()
+
+        time.sleep(3)
+        driver.find_element(By.CLASS_NAME, "Select-placeholder").click()
+
+        time.sleep(3)
+        driver.find_element(By.CLASS_NAME, "Select-option").click()
+
+        button = driver.find_elements_by_tag_name("button")
+        if len(button) == 3:
+            button_confirm = button[1]
+            button_confirm.click()
+
+
     print("finish")
 
 
