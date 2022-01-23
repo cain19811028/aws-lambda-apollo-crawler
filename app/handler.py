@@ -1,6 +1,8 @@
 # -*- encoding: utf-8-*-
 
+import json
 import time
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -83,7 +85,22 @@ def check_in(driver):
     print("finish")
 
 
+def check_holiday():
+    holidays = {}
+    with open('data/holiday.json') as json_file:
+        holidays = json.load(json_file)
+        today = datetime.today().strftime('%Y/%m/%d')
+        if today in holidays:
+            return True
+
+    return False
+
+
 def lambda_handler(event, context):
+    if check_holiday():
+        print("Today is a holiday !!!")
+        return True
+
     time_flag_1 = time.time()
     options = set_chrome_options()
     time_flag_2 = time.time()
