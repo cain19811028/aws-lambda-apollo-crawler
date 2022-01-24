@@ -87,7 +87,7 @@ def check_in(driver):
 
 def check_holiday():
     holidays = {}
-    with open('data/holiday.json') as json_file:
+    with open('holiday.json') as json_file:
         holidays = json.load(json_file)
         today = datetime.today().strftime('%Y/%m/%d')
         if today in holidays:
