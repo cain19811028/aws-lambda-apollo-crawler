@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from utility import scroll_down_to_bottom
 from ssm import SSMHelper
 
+
 def set_chrome_options():
     options = Options()
     options.binary_location = '/opt/headless-chromium'
@@ -40,7 +41,7 @@ def login(driver):
 
     time.sleep(2)
 
-    driver.find_element_by_tag_name('form').submit()
+    driver.find_element(By.TAG_NAME, "form").submit()
 
 
 def check_in(driver):
@@ -50,37 +51,36 @@ def check_in(driver):
     scroll_down_to_bottom(driver)
 
     time.sleep(5)
-    
+
     # click check in button
-    driver.find_element(By.CLASS_NAME, "ta_btn_cancel").click()
+    driver.find_element(By.TAG_NAME, "button").click()
 
     time.sleep(3)
 
     # click confirm button
-    button = driver.find_elements_by_tag_name("button")
-    if len(button) == 3:
-        button_confirm = button[1]
-        button_confirm.click()
+    # button = driver.find_elements_by_tag_name("button")
+    # if len(button) == 3:
+    #     button_confirm = button[1]
+    #     button_confirm.click()
 
-    time.sleep(3)
+    # time.sleep(3)
 
     # click overtime button
-    button = driver.find_elements_by_tag_name("button")
-    if len(button) == 3:
-        button_overtime = button[2]
-        button_overtime.click()
+    # button = driver.find_elements_by_tag_name("button")
+    # if len(button) == 3:
+    #     button_overtime = button[2]
+    #     button_overtime.click()
 
-        time.sleep(3)
-        driver.find_element(By.CLASS_NAME, "Select-placeholder").click()
+    #     time.sleep(3)
+    #     driver.find_element(By.CLASS_NAME, "Select-placeholder").click()
 
-        time.sleep(3)
-        driver.find_element(By.CLASS_NAME, "Select-option").click()
+    #     time.sleep(3)
+    #     driver.find_element(By.CLASS_NAME, "Select-option").click()
 
-        button = driver.find_elements_by_tag_name("button")
-        if len(button) == 3:
-            button_confirm = button[1]
-            button_confirm.click()
-
+    #     button = driver.find_elements_by_tag_name("button")
+    #     if len(button) == 3:
+    #         button_confirm = button[1]
+    #         button_confirm.click()
 
     print("finish")
 
