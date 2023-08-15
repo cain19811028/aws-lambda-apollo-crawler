@@ -2,7 +2,7 @@
 
 # VAR
 app_name=aws-lambda-apollo-crawler
-bucket_name=cain-2022
+bucket_name=cain-2023
 region=ap-northeast-1
 
 # PATH
