@@ -51,9 +51,9 @@ function download_chromedriver_and_headless_chromium()
 function install_python_dependencies()
 {
     sudo -H rm -r -f ${python_dep_path}
-    sudo -H mkdir -p ${python_dep_path}/python/lib/python3.7/site-packages
+    sudo -H mkdir -p ${python_dep_path}/python/lib/python3.10/site-packages
     sudo -H python3 -m pip install --upgrade pip
-    sudo -H python3 -m pip install -r requirements.txt -t ${python_dep_path}/python/lib/python3.7/site-packages
+    sudo -H python3 -m pip install -r requirements.txt -t ${python_dep_path}/python/lib/python3.10/site-packages
 }
 
 function deploy()
