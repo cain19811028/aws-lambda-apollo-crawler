@@ -8,7 +8,7 @@ or
 
 sudo pip3 install -r requirements.txt --upgrade --target layer/python-dependencies
 
-sam deploy --template-file template.yaml --stack-name aws-lambda-apollo-crawler --s3-bucket cain-2022 --region ap-northeast-1 --profile default --capabilities CAPABILITY_NAMED_IAM
+sam deploy --template-file template.yaml --stack-name aws-lambda-apollo-crawler --s3-bucket cain-2023 --region ap-northeast-1 --profile default --capabilities CAPABILITY_NAMED_IAM
 ```
 
 #### Resolve FileNotFoundError: [Errno 2] No such file or directory: '/opt/chromedriver'

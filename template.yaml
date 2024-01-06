@@ -31,7 +31,7 @@ Resources:
       Description: Headless Chromium and Selenium WebDriver
       ContentUri: layer/chromium-binaries
       CompatibleRuntimes:
-        - python3.7
+        - python3.10
       LicenseInfo: 'MIT'
       RetentionPolicy: Retain
 
@@ -42,7 +42,7 @@ Resources:
       Description: Python dependencies
       ContentUri: layer/python-dependencies
       CompatibleRuntimes:
-        - python3.7
+        - python3.10
       LicenseInfo: 'MIT'
       RetentionPolicy: Retain
 
@@ -77,7 +77,7 @@ Resources:
       Role: !GetAtt LambdaRole.Arn
       CodeUri: app/
       Handler: handler.lambda_handler
-      Runtime: python3.7
+      Runtime: python3.10
       MemorySize: 764
       Layers:
         - !Ref ChromiumLayer
